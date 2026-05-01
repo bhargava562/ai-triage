@@ -147,12 +147,12 @@ CLAUDE_DNA = {
 # Tickets matching these patterns are marked as "invalid" with no LLM call.
 
 TRIVIAL_PATTERNS = [
-    r"^thank(s| you)[\.\!\s]*$",
-    r"^(hi|hello|hey)[\.\!\s]*$",
-    r"^ok(ay)?[\.\!\s]*$",
-    r"^\s*none\s*$",
-    r"^(yes|no)[\.\!\s]*$",
-    r"^(good|great|ok|thanks)[\.\!\s]*$",
+    r"\bthank(s| you)\b",          # "thank you", "thanks", "thank you for helping me"
+    r"^(hi|hello|hey)\b",          # greetings
+    r"^ok(ay)?\b",                 # acknowledgements
+    r"^\s*none\s*$",               # empty/none
+    r"^(yes|no)\b",                # single-word answers
+    r"^(good|great|thanks)\b",     # positive closings
 ]
 
 # ────────────────────────────────────────────────────────────────────

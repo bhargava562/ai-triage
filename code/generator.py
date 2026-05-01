@@ -46,10 +46,10 @@ an account), provide ALL steps in sequence as a replied response. Do NOT escalat
 just because a prerequisite step is needed — guide the user through the full process.
 
 ESCALATION CRITERIA (set status="escalated" if ANY are true):
+- The issue describes a site-wide outage, service downtime, or platform inaccessibility (set request_type="bug" — this requires infrastructure investigation, not a self-service fix)
 - The answer requires information not in the provided documentation
 - The request involves billing disputes, chargebacks, or financial claims requiring action
 - The request involves active fraud investigation or identity theft (NOT just reporting a lost/stolen card where a contact number exists in the docs)
-- The request reports a complete site/service outage or "site is down" (this requires infrastructure investigation by engineers, not a self-service fix)
 - The request contains unreasonable demands (e.g. "increase my score", "ban this seller")
 - The ticket is in a non-English language
 - The company cannot be determined from the documentation
@@ -59,6 +59,7 @@ REPLY CRITERIA (set status="replied" if ALL are true):
 - A clear, direct answer or contact information exists in the provided documentation
 - The request is self-service OR the documentation provides a specific contact number/process
 - If documentation provides a phone number or emergency contact for the situation, use it to reply — do NOT escalate
+- If the ticket is a triviality (e.g. "Thanks", "Hello", "Thank you for helping me"), provide a polite closing and set request_type="invalid"
 
 OUTPUT FORMAT: Respond ONLY with a valid JSON object on a single line.
 No preamble, no explanation, no markdown code fences.
