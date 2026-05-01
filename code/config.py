@@ -232,7 +232,7 @@ SAMPLE_TICKETS = "../support_tickets/sample_support_tickets.csv"
 # ────────────────────────────────────────────────────────────────────
 
 # Number of top document chunks to retrieve per query
-BM25_TOP_K = 3
+BM25_TOP_K = 5
 
 # Words per chunk when splitting large .md files
 # Higher = broader context but slower retrieval

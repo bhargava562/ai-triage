@@ -9,3 +9,15 @@ WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using g
 WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.27 < 0.60
 WARNING | safety | [SAFETY_TRIGGER] VISA_FRAUD_RISK
 WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.10 < 0.60
+WARNING | retriever | [RETRIEVER] Failed to load ..\data\claude\claude-api-and-console\using-the-claude-api-and-console\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md: [Errno 2] No such file or directory: '..\\data\\claude\\claude-api-and-console\\using-the-claude-api-and-console\\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md'
+WARNING | auditor | [AUDITOR] Phase 2: Hallucination detected
+WARNING | auditor | [AUDITOR] Phase 2 FAIL — Hallucination detected
+WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using global top-k
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.25 < 0.35
+WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using global top-k
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.26 < 0.35
+ERROR | generator | [GENERATOR] Groq API error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kqhfszv8fw6rkht7d9cwv0ar` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98234, Requested 4333. Please try again in 36m57.888s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.00 < 0.35
+WARNING | safety | [SAFETY_TRIGGER] VISA_FRAUD_RISK
+ERROR | generator | [GENERATOR] Groq API error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kqhfszv8fw6rkht7d9cwv0ar` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98234, Requested 3360. Please try again in 22m57.216s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.00 < 0.35

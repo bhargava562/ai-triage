@@ -10,9 +10,9 @@ Two-phase audit:
 Phase 1 (Local Fidelity Score — always runs, O(N) time, no API cost):
     Compute Groundedness Index: G = |overlap| / |factual_response_tokens|
     G tells us what fraction of facts in the response are grounded.
-    If G < 0.60: immediate escalation (clear hallucination)
-    If G >= 0.85: clear pass, skip Phase 2 (save API cost)
-    If 0.60 <= G < 0.85: borderline, run Phase 2 (prosecutor check)
+    If G < 0.35: immediate escalation (clear hallucination)
+    If G >= 0.70: clear pass, skip Phase 2 (save API cost)
+    If 0.35 <= G < 0.70: borderline, run Phase 2 (prosecutor check)
 
 Phase 2 (LLM Adversarial Check — only borderline cases):
     A second, small LLM call acts as the Prosecutor.
@@ -222,9 +222,9 @@ def audit_response(
 
     Process:
     1. Phase 1: Compute local fidelity score (always)
-    2. If G < 0.60: escalate (Phase 1 FAIL)
-    3. If G >= 0.85: pass (Phase 1 PASS, skip Phase 2)
-    4. If 0.60 <= G < 0.85: run Phase 2 (borderline)
+    2. If G < 0.35: escalate (Phase 1 FAIL)
+    3. If G >= 0.70: pass (Phase 1 PASS, skip Phase 2)
+    4. If 0.35 <= G < 0.70: run Phase 2 (borderline)
        - If Phase 2 detects hallucination: escalate
        - If Phase 2 says grounded: keep
 
@@ -253,25 +253,25 @@ def audit_response(
     if fidelity_tag not in original_justification:
         result["justification"] = f"{fidelity_tag} {original_justification}"
 
-    # Phase 1: Clear fail (G < 0.60)
-    if fidelity_score < 0.60:
+    # Phase 1: Clear fail (G < 0.35)
+    if fidelity_score < 0.35:
         logger.warning(
-            f"[AUDITOR] Phase 1 FAIL — Fidelity={fidelity_score:.2f} < 0.60"
+            f"[AUDITOR] Phase 1 FAIL — Fidelity={fidelity_score:.2f} < 0.35"
         )
         result["status"] = "escalated"
         result["justification"] = (
             f"{fidelity_tag} [AUDIT: PHASE_1_FAIL — "
-            f"Fidelity={fidelity_score:.2f} (< 0.60), likely hallucination] "
+            f"Fidelity={fidelity_score:.2f} (< 0.35), likely hallucination] "
             + original_justification
         )
         return result
 
-    # Phase 1: Clear pass (G >= 0.85)
-    if fidelity_score >= 0.85:
+    # Phase 1: Clear pass (G >= 0.70)
+    if fidelity_score >= 0.70:
         logger.info(f"[AUDITOR] Phase 1 PASS — Fidelity={fidelity_score:.2f}")
         return result
 
-    # Phase 1: Borderline (0.60 <= G < 0.85) — run Phase 2
+    # Phase 1: Borderline (0.35 <= G < 0.70) — run Phase 2
     logger.info(
         f"[AUDITOR] Phase 2 triggered — Fidelity={fidelity_score:.2f} "
         f"(borderline, running LLM check)"
