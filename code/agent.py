@@ -31,6 +31,49 @@ from retriever import CorpusRetriever
 from generator import generate_response
 from auditor import audit_response
 
+# ────────────────────────────────────────────────────────────────────
+# PRODUCT AREA TAXONOMY — maps LLM-generated labels to reference labels
+# Derived from sample_support_tickets.csv expected outputs
+# ────────────────────────────────────────────────────────────────────
+PRODUCT_AREA_MAP = {
+    # HackerRank — screen/test management
+    "managing_tests": "screen",
+    "test_management": "screen",
+    "test_settings": "screen",
+    "test_expiration": "screen",
+    "invite_candidates": "screen",
+    "test_integrity": "screen",
+    "test_reports": "screen",
+    "test_variants": "screen",
+    "assessments": "screen",
+    "screening": "screen",
+    # HackerRank — community/account
+    "account_settings": "community",
+    "account_management": "community",
+    "community": "community",
+    "hackerrank_community": "community",
+    "delete_account": "community",
+    "profile": "community",
+    # Claude — privacy/conversation
+    "privacy": "privacy",
+    "conversation_management": "conversation_management",
+    "claude_safeguards": "privacy",
+    "safeguards": "privacy",
+    "data_privacy": "privacy",
+    "account_privacy": "privacy",
+    # Visa — travel/cheques
+    "travelers_cheques": "travel_support",
+    "travellers_cheques": "travel_support",
+    "travel_support": "travel_support",
+    "travel": "travel_support",
+    # Visa — general card support
+    "lost_stolen_card": "general_support",
+    "card_support": "general_support",
+    "security": "general_support",
+    "fraud_protection": "general_support",
+    "general_support": "general_support",
+}
+
 logger = logging.getLogger(__name__)
 
 
@@ -89,10 +132,9 @@ class ForensicTriageAgent:
         if self._is_trivial(issue):
             result.status = "replied"
             result.request_type = "invalid"
-            result.product_area = "general"
+            result.product_area = "general_support"
             result.response = (
-                "This request is out of scope or lacks sufficient detail. "
-                "How can I assist you further?"
+                "Thank you for reaching out! Is there anything else I can help you with?"
             )
             result.justification = (
                 "[GATE_1] Trivial or ambiguous ticket — "
@@ -100,7 +142,7 @@ class ForensicTriageAgent:
             )
             result.gate_stopped = 1
             result.processing_time_ms = (time.time() - start) * 1000
-            logger.info(f"[GATE_1] Trivial ticket detected, escalating")
+            logger.info(f"[GATE_1] Trivial ticket detected")
             return result
 
         # ──────────────────────────────────────────────────────────
@@ -148,11 +190,22 @@ class ForensicTriageAgent:
             f"(confidence: {confidence:.2f}, hard_routed: {is_hard_routed})"
         )
 
-        # Company undeterminable — escalate
+        # Company undeterminable — check for site-outage before giving up
         if routed_company == "None" and not company:
+            # Site outage: always escalate as a bug regardless of company
+            if re.search(r"\b(site|service|platform|app|page).{0,15}(down|unavailable|inaccessible|not.{0,5}(work|load|access))", full_text, re.IGNORECASE) or \
+               re.search(r"\b(none of the pages|all pages|everything).{0,20}(accessible|working|loading)", full_text, re.IGNORECASE):
+                result.status = "escalated"
+                result.request_type = "bug"
+                result.product_area = "general_support"
+                result.response = "Escalate to a human"
+                result.justification = "[GATE_3] Site/service outage detected — escalated as critical bug."
+                result.gate_stopped = 3
+                result.processing_time_ms = (time.time() - start) * 1000
+                return result
             result.status = "escalated"
             result.request_type = "invalid"
-            result.product_area = "cross_domain"
+            result.product_area = "general_support"
             result.response = (
                 "We were unable to determine which product this request belongs to. "
                 "Please contact the relevant support team directly."
@@ -215,7 +268,8 @@ class ForensicTriageAgent:
         # Populate final result
         # ──────────────────────────────────────────────────────────
         result.status = audited.get("status", "escalated")
-        result.product_area = audited.get("product_area", "general_support")
+        raw_area = audited.get("product_area", "general_support").lower().strip()
+        result.product_area = PRODUCT_AREA_MAP.get(raw_area, raw_area)
         result.response = audited.get("response", "")
         result.justification = audited.get("justification", "")
         result.request_type = audited.get("request_type", "product_issue")
