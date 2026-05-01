@@ -345,3 +345,30 @@ Typical single-ticket latency:
 For 30 tickets:
 - Gate 1-4 only: 3 seconds
 - With Gate 5-6: 60-120 seconds (depending on Phase 2 rate)
+
+---
+
+## Deleted Documentation Files
+
+The following markdown files were removed from the code/ directory because their content is already covered by this README.md and the project's AGENTS.md documentation:
+
+### 1. QUICKSTART.md (Deleted)
+**Purpose:** Provided a 5-minute quick reference guide for running the agent.
+**Content:** Setup steps, command reference, directory structure, troubleshooting, API costs, performance metrics.
+**Reason for Deletion:** All information is consolidated in this README.md (Installation, Running the Agent, Troubleshooting, Performance sections).
+
+### 2. INSTALL.md (Deleted)
+**Purpose:** Comprehensive installation and execution guide with detailed setup process.
+**Content:** 3-step setup process, directory structure, file descriptions, command reference, performance expectations, submission instructions.
+**Reason for Deletion:** Redundant with README.md. Installation steps covered in Installation section; execution covered in Running the Agent section; file descriptions in File Structure section.
+
+### 3. ELITE_ENHANCEMENTS.md (Deleted)
+**Purpose:** Summary of advanced features: TF-IDF fidelity scoring, auto-learning Brand DNA, multi-language injection detection.
+**Content:** Three enhancement implementations (TF-IDF scoring in auditor.py, brand_dna_trainer.py script, multilingual injection detection in safety.py) with talking points for interview and verification steps.
+**Reason for Deletion:** Technical enhancements are not part of the current submission. Base 6-gate pipeline (as documented in Architecture Overview section) is the approved implementation. Advanced features referenced here were experimental and superseded by the finalized architecture.
+
+---
+
+All required documentation is contained in:
+- **This file (README.md)** — Complete architecture guide, installation, running, troubleshooting
+- **AGENTS.md** (repo root) — Challenge rules, contract, logging requirements
