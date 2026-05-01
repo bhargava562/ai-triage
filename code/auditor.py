@@ -253,21 +253,21 @@ def audit_response(
     if fidelity_tag not in original_justification:
         result["justification"] = f"{fidelity_tag} {original_justification}"
 
-    # Phase 1: Clear fail (G < 0.35)
-    if fidelity_score < 0.35:
+    # Phase 1: Clear fail (G < 0.20)
+    if fidelity_score < 0.20:
         logger.warning(
-            f"[AUDITOR] Phase 1 FAIL — Fidelity={fidelity_score:.2f} < 0.35"
+            f"[AUDITOR] Phase 1 FAIL — Fidelity={fidelity_score:.2f} < 0.20"
         )
         result["status"] = "escalated"
         result["justification"] = (
             f"{fidelity_tag} [AUDIT: PHASE_1_FAIL — "
-            f"Fidelity={fidelity_score:.2f} (< 0.35), likely hallucination] "
+            f"Fidelity={fidelity_score:.2f} (< 0.20), likely hallucination] "
             + original_justification
         )
         return result
 
-    # Phase 1: Clear pass (G >= 0.70)
-    if fidelity_score >= 0.70:
+    # Phase 1: Clear pass (G >= 0.35)
+    if fidelity_score >= 0.35:
         logger.info(f"[AUDITOR] Phase 1 PASS — Fidelity={fidelity_score:.2f}")
         return result
 

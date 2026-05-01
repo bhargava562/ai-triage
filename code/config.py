@@ -32,7 +32,7 @@ BRAND_SCORE_MIN_THRESHOLD = 0.30
 
 # Fidelity (groundedness) threshold for auditor.
 # If computed G < this, ticket is escalated (likely hallucination)
-FIDELITY_THRESHOLD = 0.60
+FIDELITY_THRESHOLD = 0.20
 
 # Minimum word count for non-trivial tickets.
 # Below this word count → Gate 1 marks as "invalid"

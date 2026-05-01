@@ -280,9 +280,9 @@ def main():
             }
         )
 
-        # Rate limiting: delay between tickets to stay within 12k TPM limit
+        # Rate limiting: delay between tickets to stay within 6k TPM limit
         if i < len(tickets):
-            time.sleep(10)
+            time.sleep(30)
 
     # Write output and print summary
     write_output(output_rows, args.output)
