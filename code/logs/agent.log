@@ -78,3 +78,17 @@ WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using g
 WARNING | retriever | [RETRIEVER] Failed to load ..\data\claude\claude-api-and-console\using-the-claude-api-and-console\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md: [Errno 2] No such file or directory: '..\\data\\claude\\claude-api-and-console\\using-the-claude-api-and-console\\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md'
 WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using global top-k
 WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using global top-k
+WARNING | retriever | [RETRIEVER] Failed to load ..\data\claude\claude-api-and-console\using-the-claude-api-and-console\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md: [Errno 2] No such file or directory: '..\\data\\claude\\claude-api-and-console\\using-the-claude-api-and-console\\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md'
+WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using global top-k
+WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using global top-k
+WARNING | retriever | [RETRIEVER] Failed to load ..\data\claude\claude-api-and-console\using-the-claude-api-and-console\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md: [Errno 2] No such file or directory: '..\\data\\claude\\claude-api-and-console\\using-the-claude-api-and-console\\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md'
+WARNING | safety | [SAFETY_TRIGGER] CHARGEBACK_ESCALATION
+WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using global top-k
+ERROR | generator | [GENERATOR] Groq API error: Error code: 413 - {'error': {'message': 'Request too large for model `llama-3.1-8b-instant` in organization `org_01kqhfszv8fw6rkht7d9cwv0ar` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Requested 7448, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.10 < 0.20
+WARNING | safety | [SAFETY_TRIGGER] IDENTITY_THEFT_RISK
+WARNING | safety | [SAFETY_TRIGGER] CHARGEBACK_ESCALATION
+WARNING | safety | [SAFETY_TRIGGER] SECURITY_DISCLOSURE_REQUIRED
+WARNING | safety | [SAFETY_TRIGGER] FINANCIAL_URGENCY_RISK
+WARNING | safety | [SAFETY_TRIGGER] MALICIOUS_SYSTEM_REQUEST
+WARNING | safety | [INJECTION_SUSPECTED] Language-specific trigger detected: fr + 'affiche'
