@@ -184,30 +184,50 @@ without updating this file.
 ```
 .
 ├── AGENTS.md                    # this file
+├── CLAUDE.md                    # points to AGENTS.md
 ├── README.md                    # human-facing quickstart
 ├── .gitignore
 ├── .env.example                 # copy to .env; never commit .env
 ├── code/
-│   ├── your_file.py
-│   ├── agent.py
-│   └── main.py
+│   ├── main.py          # CLI entry point (--sample, --dry-run, --input, --output)
+│   ├── agent.py         # 6-gate pipeline + PRODUCT_AREA_MAP taxonomy normalizer
+│   ├── config.py        # ALL constants: DNA maps, thresholds, patterns, paths
+│   ├── safety.py        # Gate 2: hard escalation triggers + prompt injection
+│   ├── router.py        # Gate 3: Brand DNA weighted keyword router
+│   ├── retriever.py     # Gate 4: BM25 corpus loader (skips release-notes/)
+│   ├── generator.py     # Gate 5: Grounded LLM response generator (Groq)
+│   ├── auditor.py       # Gate 6: Phase 1 fidelity verifier (Phase 2 disabled)
+│   ├── formatter.py     # Rich terminal dashboard
+│   ├── requirements.txt
+│   └── README.md        # Full architecture guide + optimization history
 ├── support_tickets/
-│   ├── sample_support_tickets.csv            # sample tickets + expected signals
-│   └── support_tickets.csv
-│   └── output.csv
-├── data/
-|   ├── visa/
-|   ├── hackerrank/
-|   ├── claude/
-
+│   ├── sample_support_tickets.csv   # inputs + expected outputs (dev/test)
+│   ├── support_tickets.csv          # inputs only — run agent on this
+│   └── output.csv                   # agent predictions (written by main.py)
+└── data/
+    ├── visa/
+    ├── hackerrank/
+    └── claude/
 ```
 
-### 6.6 Constraints that make the submission evaluable
+### 6.2 Key runtime settings (current)
 
-- **Deterministic where possible.**.
-- **Add proper README** to the code/ you write.
-- **Read secrets from env vars only** (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`,
-  etc.). Never hardcode.
+| Setting | Value | File |
+|---------|-------|------|
+| LLM model | `llama-3.1-8b-instant` (Groq) | config.py |
+| Rate limit sleep | 45 seconds between tickets | main.py |
+| BM25_TOP_K | 4 chunks retrieved | config.py |
+| BM25_CHUNK_SIZE | 200 words | config.py |
+| FIDELITY_THRESHOLD | 0.20 (Phase 1 only) | config.py |
+| Phase 2 auditor | Disabled (token budget) | auditor.py |
+| Release-notes | Skipped in retrieval | retriever.py |
+| Taxonomy map | PRODUCT_AREA_MAP normalizes LLM labels | agent.py |
+
+### 6.3 Constraints that make the submission evaluable
+
+- **Deterministic where possible.** `LLM_TEMPERATURE = 0.0` in config.py.
+- **Add proper README** to the code/ directory — see code/README.md.
+- **Read secrets from env vars only** (`GROQ_API_KEY`). Never hardcode.
 ---
 
 
