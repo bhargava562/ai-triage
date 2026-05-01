@@ -32,7 +32,7 @@ BRAND_SCORE_MIN_THRESHOLD = 0.30
 
 # Fidelity (groundedness) threshold for auditor.
 # If computed G < this, ticket is escalated (likely hallucination)
-FIDELITY_THRESHOLD = 0.20
+FIDELITY_THRESHOLD = 0.40
 
 # Minimum word count for non-trivial tickets.
 # Below this word count → Gate 1 marks as "invalid"
@@ -166,12 +166,16 @@ TRIVIAL_PATTERNS = [
 # The label is included in justification for audit trail.
 
 HARD_ESCALATION_TRIGGERS = [
+    # ──── FINANCIAL CLAIMS (cross-domain) ────
+    (r"\b(refund|reimburs|money back|get my money|give me.{0,10}refund|asap.{0,20}refund|refund.{0,20}asap)\b",
+     "FINANCIAL_CLAIM"),
+    (r"\b(payment.{0,20}(issue|fail|error|problem)|cs_live_|cs_test_|order.{0,5}id|transaction.{0,5}id)\b",
+     "PAYMENT_ISSUE"),
+
     # ──── VISA-SPECIFIC RISKS ────
-    # Removed: (r"\b(stolen card|card stolen|lost card|unauthorized transaction)\b", "VISA_FRAUD_RISK")
-    # Allow these to be answered from documentation for this challenge
     (r"\b(identity.{0,10}(theft|stolen)|my identity|id theft)\b",
      "IDENTITY_THEFT_RISK"),
-    (r"\b(chargeback|dispute|contested)\b",
+    (r"\b(chargeback|contested)\b",
      "CHARGEBACK_ESCALATION"),
 
     # ──── HACKERRANK-SPECIFIC RISKS ────

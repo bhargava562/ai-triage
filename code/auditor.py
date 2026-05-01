@@ -253,21 +253,28 @@ def audit_response(
     if fidelity_tag not in original_justification:
         result["justification"] = f"{fidelity_tag} {original_justification}"
 
-    # Phase 1: Clear fail (G < 0.20)
-    if fidelity_score < 0.20:
+    # Skip fidelity check for out-of-scope/invalid replies — refusal templates
+    # are not grounded in docs by design, so fidelity scoring is meaningless here
+    if result.get("request_type") == "invalid" and result.get("status") == "replied":
+        logger.info("[AUDITOR] Skipping fidelity check for out-of-scope reply")
+        result["justification"] = f"{fidelity_tag} [AUDIT: SKIPPED — out-of-scope reply] " + original_justification
+        return result
+
+    # Phase 1: Clear fail (G < 0.40) — escalate low-groundedness replies
+    if fidelity_score < 0.40:
         logger.warning(
-            f"[AUDITOR] Phase 1 FAIL — Fidelity={fidelity_score:.2f} < 0.20"
+            f"[AUDITOR] Phase 1 FAIL — Fidelity={fidelity_score:.2f} < 0.40"
         )
         result["status"] = "escalated"
         result["justification"] = (
             f"{fidelity_tag} [AUDIT: PHASE_1_FAIL — "
-            f"Fidelity={fidelity_score:.2f} (< 0.20), likely hallucination] "
+            f"Fidelity={fidelity_score:.2f} (< 0.40), insufficient grounding] "
             + original_justification
         )
         return result
 
-    # Phase 1: Clear pass (G >= 0.35)
-    if fidelity_score >= 0.35:
+    # Phase 1: Clear pass (G >= 0.40)
+    if fidelity_score >= 0.40:
         logger.info(f"[AUDITOR] Phase 1 PASS — Fidelity={fidelity_score:.2f}")
         return result
 
