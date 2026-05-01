@@ -13,6 +13,7 @@ Output is written to support_tickets/output.csv (or --output path).
 import os
 import csv
 import sys
+import time
 import logging
 import argparse
 from pathlib import Path
@@ -278,6 +279,10 @@ def main():
                 "justification": result.justification,
             }
         )
+
+        # Rate limiting: delay between tickets to stay within 12k TPM limit
+        if i < len(tickets):
+            time.sleep(10)
 
     # Write output and print summary
     write_output(output_rows, args.output)

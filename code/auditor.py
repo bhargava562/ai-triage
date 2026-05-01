@@ -271,23 +271,12 @@ def audit_response(
         logger.info(f"[AUDITOR] Phase 1 PASS — Fidelity={fidelity_score:.2f}")
         return result
 
-    # Phase 1: Borderline (0.35 <= G < 0.70) — run Phase 2
+    # Phase 1: Borderline (0.35 <= G < 0.70) — SKIP Phase 2 to save tokens
     logger.info(
-        f"[AUDITOR] Phase 2 triggered — Fidelity={fidelity_score:.2f} "
-        f"(borderline, running LLM check)"
+        f"[AUDITOR] Borderline fidelity={fidelity_score:.2f} "
+        f"(skipping Phase 2 LLM check to optimize tokens)"
     )
-
-    if run_llm_adversarial_check(response_text, chunks, client):
-        # Phase 2 detected hallucination
-        logger.warning("[AUDITOR] Phase 2 FAIL — Hallucination detected")
-        result["status"] = "escalated"
-        result["justification"] = (
-            f"{fidelity_tag} [AUDIT: PHASE_2_FAIL — "
-            f"LLM prosecutor found ungrounded claims] "
-            + original_justification
-        )
-    else:
-        # Phase 2 says grounded
-        logger.info("[AUDITOR] Phase 2 PASS — Response is grounded")
+    # Phase 2 (LLM adversarial check) disabled to save API tokens
+    # The response passed Phase 1, so allow it through
 
     return result

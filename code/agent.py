@@ -168,7 +168,9 @@ class ForensicTriageAgent:
         # ──────────────────────────────────────────────────────────
         # GATE 4: BM25 Corpus Retrieval
         # ──────────────────────────────────────────────────────────
-        chunks = self.retriever.retrieve(issue, routed_company)
+        # Boost query with subject to improve retrieval accuracy
+        boosted_query = f"{subject} {issue}".strip() if subject else issue
+        chunks = self.retriever.retrieve(boosted_query, routed_company)
         logger.info(f"[GATE_4] Retrieved {len(chunks)} chunks")
 
         if not chunks:

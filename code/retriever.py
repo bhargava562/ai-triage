@@ -110,6 +110,10 @@ class CorpusRetriever:
         logger.info(f"[RETRIEVER] Found {len(md_files)} markdown files")
 
         for md_file in md_files:
+            # Skip release-notes files (contain too many generic keywords)
+            if "release-notes" in md_file.parts or "release_notes" in md_file.parts:
+                continue
+
             company = self._infer_company_from_path(md_file)
             try:
                 text = md_file.read_text(encoding="utf-8", errors="ignore")
@@ -235,7 +239,15 @@ class CorpusRetriever:
 
         if relevant_indices:
             # Filter scores to company-specific chunks only
-            company_scores = [(i, all_scores[i]) for i in relevant_indices]
+            # Apply penalty to release-notes files (they are less actionable)
+            company_scores = []
+            for i in relevant_indices:
+                score = all_scores[i]
+                # Penalize release-notes: multiply score by 0.5
+                if "release-notes" in self.chunks[i].source_file.lower():
+                    score *= 0.5
+                company_scores.append((i, score))
+
             company_scores.sort(key=lambda x: x[1], reverse=True)
             top_indices = [i for i, _ in company_scores[:top_k]]
         else:
