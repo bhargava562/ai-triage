@@ -168,8 +168,14 @@ class ForensicTriageAgent:
         # ──────────────────────────────────────────────────────────
         # GATE 4: BM25 Corpus Retrieval
         # ──────────────────────────────────────────────────────────
-        # Boost query with subject to improve retrieval accuracy
+        # Boost query with subject + semantic synonyms to improve retrieval
         boosted_query = f"{subject} {issue}".strip() if subject else issue
+        # Expand known thin queries with synonyms
+        q_lower = boosted_query.lower()
+        if any(w in q_lower for w in ["active", "stay active", "how long", "expire", "expiration"]):
+            boosted_query += " test expiration time start end date modify"
+        if any(w in q_lower for w in ["stolen", "lost card", "missing card", "india"]):
+            boosted_query += " lost stolen card report India phone number GCAS"
         chunks = self.retriever.retrieve(boosted_query, routed_company)
         logger.info(f"[GATE_4] Retrieved {len(chunks)} chunks")
 

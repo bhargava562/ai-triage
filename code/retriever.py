@@ -110,8 +110,10 @@ class CorpusRetriever:
         logger.info(f"[RETRIEVER] Found {len(md_files)} markdown files")
 
         for md_file in md_files:
-            # Skip release-notes files (contain too many generic keywords)
-            if "release-notes" in md_file.parts or "release_notes" in md_file.parts:
+            # Skip release-notes files (contain too many generic keywords
+            # that outscore actual procedural manuals in BM25)
+            path_parts_lower = [p.lower() for p in md_file.parts]
+            if "release-notes" in path_parts_lower or "release_notes" in path_parts_lower:
                 continue
 
             company = self._infer_company_from_path(md_file)

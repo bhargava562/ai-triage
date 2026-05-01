@@ -232,12 +232,12 @@ SAMPLE_TICKETS = "../support_tickets/sample_support_tickets.csv"
 # ────────────────────────────────────────────────────────────────────
 
 # Number of top document chunks to retrieve per query
-BM25_TOP_K = 2
+BM25_TOP_K = 4
 
 # Words per chunk when splitting large .md files
 # Higher = broader context but slower retrieval
 # Lower = faster but may miss related info
-BM25_CHUNK_SIZE = 250
+BM25_CHUNK_SIZE = 200
 
 # Minimum chunk length (words) to include in corpus
 # Filters out nearly-empty chunks
