@@ -61,17 +61,17 @@ PRODUCT_AREA_MAP = {
     "safeguards": "privacy",
     "data_privacy": "privacy",
     "account_privacy": "privacy",
-    # Visa — travel/cheques
-    "travelers_cheques": "travel_support",
-    "travellers_cheques": "travel_support",
-    "travel_support": "travel_support",
-    "travel": "travel_support",
+    "invalid": "conversation_management",   # out-of-scope replies file under conversation_management
     # Visa — general card support
     "lost_stolen_card": "general_support",
     "card_support": "general_support",
     "security": "general_support",
     "fraud_protection": "general_support",
     "general_support": "general_support",
+    "travel_support": "general_support",    # lost/stolen card in travel context -> general_support
+    "travelers_cheques": "travel_support",  # cheques specifically stay as travel_support
+    "travellers_cheques": "travel_support",
+    "travel": "travel_support",
 }
 
 logger = logging.getLogger(__name__)

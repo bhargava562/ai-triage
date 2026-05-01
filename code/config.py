@@ -148,11 +148,11 @@ CLAUDE_DNA = {
 
 TRIVIAL_PATTERNS = [
     r"\bthank(s| you)\b",          # "thank you", "thanks", "thank you for helping me"
-    r"^(hi|hello|hey)\b",          # greetings
-    r"^ok(ay)?\b",                 # acknowledgements
+    r"^(hi|hello|hey)[\.\!\s]*$",  # greetings ONLY when that's the entire message
+    r"^ok(ay)?[\.\!\s]*$",         # acknowledgements only
     r"^\s*none\s*$",               # empty/none
-    r"^(yes|no)\b",                # single-word answers
-    r"^(good|great|thanks)\b",     # positive closings
+    r"^(yes|no)[\.\!\s]*$",        # single-word answers
+    r"^(good|great|thanks)[\.\!\s]*$",  # positive closings only
 ]
 
 # ────────────────────────────────────────────────────────────────────
