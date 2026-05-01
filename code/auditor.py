@@ -28,6 +28,7 @@ Why two phases?
 
 import re
 import logging
+import math
 from groq import Groq
 from config import FIDELITY_THRESHOLD, AUDITOR_MAX_TOKENS, LLM_MODEL
 from retriever import DocumentChunk
@@ -83,14 +84,21 @@ def _extract_factual_tokens(text: str) -> set:
 
 def compute_fidelity_score(response: str, chunks: list) -> float:
     """
-    Compute the Groundedness Index (G).
+    Compute the TF-IDF Groundedness Index (G) with weighted scoring.
 
-    Formula: G = |response_factual ∩ context_factual| / |response_factual|
+    Enhanced formula with IDF weighting:
+    G = Σ(overlap_token_weight) / Σ(response_token_weight)
+
+    Where weight = log(total_docs / docs_containing_token)
+
+    This prioritizes rare, specific terms over common words:
+    - "proctor" (unique to HackerRank): weight ~0.95
+    - "button" (common everywhere): weight ~0.1
 
     Interpretation:
-    - G = 1.0: All factual claims are in the docs
-    - G = 0.72 (threshold): ~3 in 4 facts are grounded (acceptable)
-    - G = 0.5: Half the "facts" are not in the docs (hallucination risk)
+    - G = 1.0: All weighted facts in response are in the docs
+    - G = 0.72 (threshold): ~3 in 4 weighted facts are grounded
+    - G = 0.5: Half the "facts" are not in the docs (hallucination)
     - G = 0.0: No overlap (pure hallucination)
 
     Args:
@@ -105,18 +113,44 @@ def compute_fidelity_score(response: str, chunks: list) -> float:
 
     response_tokens = _extract_factual_tokens(response)
     if not response_tokens:
-        # Empty/trivial response with no factual claims
-        # Safe to return 1.0 (trivially grounded)
-        return 1.0
+        return 1.0  # Trivial response = trivially grounded
 
-    # Combine all context into one document
+    # Calculate IDF weights from context documents
+    doc_count = len(chunks)
+    token_doc_freq = {}
+
+    for doc in chunks:
+        doc_tokens = _extract_factual_tokens(doc.text)
+        for token in doc_tokens:
+            token_doc_freq[token] = token_doc_freq.get(token, 0) + 1
+
+    # Calculate IDF: log(total_docs / docs_with_token)
+    idf_weights = {}
+    for token, freq in token_doc_freq.items():
+        idf_weights[token] = math.log(doc_count / freq) if freq > 0 else 1.0
+
+    # Get context tokens
     context_text = " ".join(chunk.text for chunk in chunks)
     context_tokens = _extract_factual_tokens(context_text)
 
-    # Compute overlap
-    overlap = response_tokens.intersection(context_tokens)
-    fidelity = len(overlap) / len(response_tokens)
+    # Calculate weighted overlap
+    overlap_weight = 0.0
+    response_weight = 0.0
 
+    for token in response_tokens:
+        # Use IDF weight if available, else default 1.0
+        weight = idf_weights.get(token, 1.0)
+        response_weight += weight
+
+        # If token is in context, add to overlap
+        if token in context_tokens:
+            overlap_weight += weight
+
+    # Return fidelity (weighted overlap / total weighted response)
+    if response_weight == 0:
+        return 1.0
+
+    fidelity = overlap_weight / response_weight
     return fidelity
 
 

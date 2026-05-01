@@ -73,16 +73,16 @@ def log_gate(
     """
     # Determine status icon and color based on result
     if "PASS" in result or "OK" in result or "RETRIEVE" in result:
-        status_icon = "✓"
+        status_icon = "+"
         status_style = GREEN
     elif "WARN" in result or "BORDERLINE" in result:
-        status_icon = "⚠"
+        status_icon = "!"
         status_style = YELLOW
     elif "FAIL" in result or "ESCALATE" in result:
-        status_icon = "✗"
+        status_icon = "X"
         status_style = RED
     else:
-        status_icon = "→"
+        status_icon = ">"
         status_style = BLUE
 
     elapsed = f"[ {gate_num * 0.08:.2f}s ]"
@@ -110,7 +110,7 @@ def log_ticket_result(result, ticket_num: int) -> None:
     """
     status_color = GREEN if result.status == "replied" else YELLOW
     console.print(
-        f"  [dim]→[/dim] "
+        f"  [dim]>[/dim] "
         f"[{status_color}]{result.status.upper()}[/{status_color}] "
         f"| {result.request_type} "
         f"| {result.product_area} "
