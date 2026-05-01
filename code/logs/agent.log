@@ -1,0 +1,11 @@
+WARNING | retriever | [RETRIEVER] Failed to load ..\data\claude\claude-api-and-console\using-the-claude-api-and-console\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md: [Errno 2] No such file or directory: '..\\data\\claude\\claude-api-and-console\\using-the-claude-api-and-console\\9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console.md'
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.34 < 0.60
+WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using global top-k
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.16 < 0.60
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.30 < 0.60
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.42 < 0.60
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.48 < 0.60
+WARNING | retriever | [RETRIEVER] No company-specific chunks for 'None', using global top-k
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.27 < 0.60
+WARNING | safety | [SAFETY_TRIGGER] VISA_FRAUD_RISK
+WARNING | auditor | [AUDITOR] Phase 1 FAIL — Fidelity=0.10 < 0.60

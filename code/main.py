@@ -29,9 +29,18 @@ from formatter import (
 from config import TICKETS_INPUT, TICKETS_OUTPUT, SAMPLE_TICKETS
 
 # Configure logging (warnings/errors only; Rich handles display)
+# Log file path: code/logs/agent.log
+log_dir = Path(__file__).parent / "logs"
+log_dir.mkdir(exist_ok=True)
+log_file = log_dir / "agent.log"
+
 logging.basicConfig(
     level=logging.WARNING,
     format="%(levelname)s | %(name)s | %(message)s",
+    handlers=[
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+    ]
 )
 
 logger = logging.getLogger(__name__)
