@@ -83,19 +83,19 @@ def validate_environment() -> None:
             "Copy .env.example to .env and add your API key."
         )
 
-    if not Path("data").exists():
-        errors.append("data/ directory not found. Run from the repo root.")
+    if not Path("../data").exists():
+        errors.append("../data/ directory not found. Run from the code/ directory.")
 
-    if not Path("support_tickets").exists():
-        errors.append("support_tickets/ directory not found.")
+    if not Path("../support_tickets").exists():
+        errors.append("../support_tickets/ directory not found.")
 
     if errors:
         console.print("[bold red]Environment Validation Failed:[/bold red]")
         for error in errors:
-            console.print(f"  [red]✗ {error}[/red]")
+            console.print(f"  [red]X {error}[/red]")
         sys.exit(1)
 
-    console.print("  [bold green]✓ Environment validated[/bold green]")
+    console.print("  [bold green]+ Environment validated[/bold green]")
 
 
 def read_tickets(path: str) -> list:
@@ -164,9 +164,9 @@ def write_output(results: list, path: str) -> None:
             writer = csv.DictWriter(f, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
             writer.writeheader()
             writer.writerows(results)
-        console.print(f"  [green]✓ Output written to: {path}[/green]")
+        console.print(f"  [green]+ Output written to: {path}[/green]")
     except Exception as e:
-        console.print(f"[red]✗ Error writing output: {e}[/red]")
+        console.print(f"[red]X Error writing output: {e}[/red]")
         sys.exit(1)
 
 
@@ -206,7 +206,7 @@ def main():
     )
 
     if not Path(input_path).exists():
-        console.print(f"[red]✗ Input file not found: {input_path}[/red]")
+        console.print(f"[red]X Input file not found: {input_path}[/red]")
         sys.exit(1)
 
     # Read tickets
@@ -215,7 +215,7 @@ def main():
 
     # Dry run (validation only, no processing)
     if args.dry_run:
-        console.print("[bold yellow]✓ Dry run complete — environment is valid.[/bold yellow]")
+        console.print("[bold yellow]+ Dry run complete -- environment is valid.[/bold yellow]")
         return
 
     # Initialize agent (builds BM25 index)
@@ -223,7 +223,7 @@ def main():
     try:
         agent = ForensicTriageAgent()
     except Exception as e:
-        console.print(f"[red]✗ Failed to initialize agent: {e}[/red]")
+        console.print(f"[red]X Failed to initialize agent: {e}[/red]")
         sys.exit(1)
     console.print()
 
@@ -245,7 +245,7 @@ def main():
         try:
             result = agent.process_ticket(issue, subject, company)
         except Exception as e:
-            console.print(f"[red]✗ Error processing ticket: {e}[/red]")
+            console.print(f"[red]X Error processing ticket: {e}[/red]")
             logger.exception("Ticket processing error")
             result = agent.process_ticket("", "", "")  # Return empty result
             result.status = "escalated"

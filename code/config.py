@@ -219,13 +219,13 @@ PROMPT_INJECTION_PATTERNS = [
 # CORPUS AND FILE PATHS
 # ────────────────────────────────────────────────────────────────────
 
-# Root directory containing markdown documentation
-DATA_DIR = "data"
+# Root directory containing markdown documentation (relative to code/)
+DATA_DIR = "../data"
 
-# Input/Output CSV file paths (relative to repo root)
-TICKETS_INPUT = "support_tickets/support_tickets.csv"
-TICKETS_OUTPUT = "support_tickets/output.csv"
-SAMPLE_TICKETS = "support_tickets/sample_support_tickets.csv"
+# Input/Output CSV file paths (relative to code/)
+TICKETS_INPUT = "../support_tickets/support_tickets.csv"
+TICKETS_OUTPUT = "../support_tickets/output.csv"
+SAMPLE_TICKETS = "../support_tickets/sample_support_tickets.csv"
 
 # ────────────────────────────────────────────────────────────────────
 # BM25 RETRIEVAL CONFIGURATION

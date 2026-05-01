@@ -34,11 +34,11 @@ WHITE = "white"
 def print_banner() -> None:
     """Print the main banner at startup."""
     banner = Text()
-    banner.append("  ╔══════════════════════════════════════════════════╗\n", style=ORANGE)
-    banner.append("  ║   FORENSIC TRIAGE AGENT v1.0                    ║\n", style=ORANGE)
-    banner.append("  ║   HackerRank Orchestrate | May 2026             ║\n", style=GRAY)
-    banner.append("  ║   Architecture: 6-Gate Deterministic Pipeline   ║\n", style=GRAY)
-    banner.append("  ╚══════════════════════════════════════════════════╝\n", style=ORANGE)
+    banner.append("  ====================================================\n", style=ORANGE)
+    banner.append("  FORENSIC TRIAGE AGENT v1.0\n", style=ORANGE)
+    banner.append("  HackerRank Orchestrate | May 2026\n", style=GRAY)
+    banner.append("  Architecture: 6-Gate Deterministic Pipeline\n", style=GRAY)
+    banner.append("  ====================================================\n", style=ORANGE)
     console.print(banner)
 
 
